@@ -2,11 +2,11 @@
 <html lang="en">
 	<head>
 
-		<title>Bitcoin Wallet by Coinb.in</title>
+		<title>ZCore Web Wallet</title>
 
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-		<meta name="keywords" content="bitcoin, wallet, multisig, multisignature, address, browser, segwit, javascript, js, broadcast, transaction, verify, decode" />
-		<meta name="description" content="A Bitcoin Wallet written in Javascript. Supports Multisig, SegWit, Custom Transactions, nLockTime and more!" />
+		<meta name="keywords" content="bitcoin, wallet, multisig, multisignature, address, browser, javascript, js, broadcast, transaction, verify, decode" />
+		<meta name="description" content="A ZCore Wallet written in Javascript. Supports Multisig, Custom Transactions, nLockTime and more!" />
 
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,7 +59,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-plus"></span> New<b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="#newAddress" data-toggle="tab">Address</a></li>
-									<li><a href="#newSegWit" data-toggle="tab">SegWit Address</a></li>
+									<!-- <li><a href="#newSegWit" data-toggle="tab">SegWit Address</a></li>-->
 									<li><a href="#newMultiSig" data-toggle="tab">MultiSig Address</a></li>
 									<li><a href="#newTimeLocked" data-toggle="tab">Time Locked Address</a></li>
 									<li><a href="#newHDaddress" data-toggle="tab">HD Address</a></li>
@@ -93,8 +93,8 @@
 						</div>
 
 						<div class="jumbotron">
-							<h1>Bitcoin. It's your money!</h1>
-							<p>Be your own bank, take control of your own money and start using Bitcoin today!</p>
+							<h1>ZCore. It's your money!</h1>
+							<p>Be your own bank, take control of your own money and start using ZCore today!</p>
 							<p><a class="btn btn-primary btn-lg" href="#about" role="button">Learn more &raquo;</a></p>
 						</div>
 
@@ -125,7 +125,7 @@
 
 							<div class="col-md-4">
 								<h3><span class="glyphicon glyphicon-globe"></span> Addresses</h3>
-								<p>We support <a href="#newAddress">regular addresses</a>, <a href="#newMultiSig">multisig</a>, <a href="#newSegWit">segwit / bech32</a> and stealth all with access to your own private keys!</p>
+								<p>We support <a href="#newAddress">regular addresses</a> and <a href="#newMultiSig">multisig</a>. <!-- <a href="#newSegWit">segwit / bech32</a> and stealth all with access to your own private keys!--></p>
 							</div>
 
 							<div class="col-md-4">
@@ -155,13 +155,13 @@
 
 										<div>
 											<a href="javascript:;" class="optionsCollapse"><div class="well well-sm"><span class="glyphicon glyphicon-collapse-down" id="glyphcollapse"></span> Advanced Options</div></a>
-											<div class="hidden optionsAdvanced">
+											<!-- aqui <div class="hidden optionsAdvanced">
 												<label>Segregated Witness Address</label>
 												<p class="checkbox">
 													<label><input type="checkbox" id="walletSegwit" class="checkbox-inline" checked> Use a segwit address instead of a regular address. <span class="text-muted"><i>(recommended)</i></span></label></label> <br>
 													<label><input type="radio" id="walletSegwitp2sh" class="walletSegwitType" name="walletSegWitType" value="p2sh" checked> p2sh address</label> <br>
 													<label><input type="radio" id="walletSegwitBech32" class="walletSegwitType" name="walletSegWitType" value="bech32"> bech32 address</label>
-												</p>
+												</p> -->
 
 												<label>Enable Replace by Fee (RBF)</label>
 												<p class="checkbox">
@@ -185,12 +185,11 @@
 											<div>
 												<span id="walletLoader" class="hidden"><img src="images/loader.gif"></span>
 												<span id="walletAddress"></span> 
-
 												<div class="btn-group">
 													<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" id="walletToBtn">SegWit <span class="caret"></span></button>
 													<ul class="dropdown-menu">
-														<li><a href="javascript:;" id="walletToSegWit">SegWit</a></li>
-														<li><a href="javascript:;" id="walletToSegWitBech32">SegWit/Bech32</a></li>
+														<!-- <li><a href="javascript:;" id="walletToSegWit">SegWit</a></li>
+														<li><a href="javascript:;" id="walletToSegWitBech32">SegWit/Bech32</a></li> -->
 														<li><a href="javascript:;" id="walletToLegacy">Legacy</a></li>
 													</ul>
 												</div>
@@ -198,10 +197,10 @@
 											<br>
 											<div style="text-align:center; width:350px;">
 												<ul class="nav nav-pills" role="tablist">
-													<li role="presentation" class="active"><a href="javascript:;" id="walletBalance">0.00 BTC</a></li>
+													<li role="presentation" class="active"><a href="javascript:;" id="walletBalance">0.00 ZCR</a></li>
 													<li role="presentation"><a href="javascript:;" id="walletShowSpend">Spend</a></li>
 													<li role="presentation"><a id="walletHistory" href="javascript:;" target="_blank">History</a></li>
-													<li role="presentation"><a href="https://localbitcoins.com/?ch=173j" target="_blank">Buy</a></li>
+													<li role="presentation"><a href="https://crex24.com" target="_blank">Buy</a></li>
 													<li role="presentation"><a href="javascript:;" id="walletShowKeys">Keys</a></li>
 												</ul>
 
@@ -211,10 +210,10 @@
 													<label>Public Key</label>
 													<input class="form-control pubkey" type="text" readonly>
 
-													<div class="walletSegWitRS hidden">
+													<!--<div class="walletSegWitRS hidden">
 														<label>Redeem Script <i>(SegWit)</i></label>
 														<input class="form-control" type="text" readonly>
-													</div>
+													</div>-->
 
 													<label>Private key</label>
 													<div class="input-group">
@@ -262,7 +261,7 @@
 															<input type="text" class="form-control" value="0.00004000" id="txFee">
 														</div>
 														<div class="col-xs-5">
-															<label><abbr title="the amount to donate to coinb.in">Donation</abbr></label>
+															<label><abbr title="the amount to donate to wallet.zcore.cash">Donation</abbr></label>
 															<input type="text" class="form-control" value="0.003" id="developerDonation">
 														</div>
 													</div>
@@ -341,7 +340,7 @@
 						<input type="button" class="btn btn-primary" value="Generate" id="newKeysBtn">
 						<br>
 					</div>
-
+                    <!--
 					<div class="tab-pane tab-content" id="newSegWit">
 						<h2>New SegWit Address <small> Smaller &amp; Faster Transactions</small></h2>
 
@@ -385,7 +384,7 @@
 
 						<input type="button" class="btn btn-primary" value="Generate" id="newSegWitKeysBtn">
 						<br>
-					</div>
+					</div>-->
 
 					<div class="tab-pane tab-content" id="newMultiSig">
 						<h2>New Multisig Address <small>Secure multisig address</small></h2>
@@ -609,7 +608,7 @@
 
 								<label>Null Data</label> <span class="text-muted text-normal">(80 byte limit, <i>40 bytes recommended</i>)</span>
 								<p class="checkbox">
-									<label><input type="checkbox" id="opReturn" class="checkbox-inline"> Allow data to be sent within the transaction and stored in the blockchain by using <a href="https://bitcoin.org/en/developer-guide#null-data" target="_"blank">OP_RETURN</a>.</label>
+									<label><input type="checkbox" id="opReturn" class="checkbox-inline"> Allow data to be sent within the transaction and stored in the blockchain by using <a href="https://bitcoin.org/en/developer-guide#null-data" target="_blank">OP_RETURN</a>.</label>
 									<div class="text-muted">When using this option you may enter a hex string or address into the address field on the output tab.</div>
 								</p>
 
@@ -751,11 +750,11 @@
 
 
 					<div class="tab-pane tab-content" id="fees">
-						<h2>Bitcoin Fee Calculator</h2>
+						<h2>ZCore Fee Calculator</h2>
 						<p>This page will give you a guide on the lowest fee to use to get your transaction included within the next few blocks. It works by predicting the size of a transaction and comparing it to another transaction in a recent block to determine an appropriate fee.</p>	
 
 						<div align="center" class="alert alert-info">
-							<h2><span class="glyphicon glyphicon-question-sign"></span> Recommended Fee: <span class="recommendedFee">0.00000000</span> BTC <small> <br> for a transaction of <span class="feeTxSize">0</span> bytes</small></h2>
+							<h2><span class="glyphicon glyphicon-question-sign"></span> Recommended Fee: <span class="recommendedFee">0.00000000</span> ZCR <small> <br> for a transaction of <span class="feeTxSize">0</span> bytes</small></h2>
 							<span class="text-muted"><i><span class="feeSatByte">?</span> Sat/Byte</i></span>
 						</div>
 
@@ -779,12 +778,12 @@
 									<input type="range" min="0" max="100" value="1" class="slider txinput txi_regular" rel="regular">
 									<span class="input-group-btn"><button class="btn sliderbtn up" type="button"><span class="glyphicon glyphicon-chevron-right"></span></button></span>
 								</div>
-
+                                <!--
 								<h4 class="segwit"><abbr title="Spending from a segwit address. p2sh">SegWit</abbr> 
 									<span class="badge inputno" title="Number of SegWit Inputs">0</span>
 									<small><span class="bytes">0</span> bytes</small>
 									<small class="estimate hidden"><em> *estimate</em></small>
-								</h4> 
+								</h4> --> 
 
 								<div class="input-group">
 									<span class="input-group-btn"><button class="btn sliderbtn down" type="button"><span class="glyphicon glyphicon-chevron-left"></span></button></span>
@@ -891,7 +890,7 @@
 								<p><b>Transaction Fee</b>: <span class="txFee">0.00000000</span></p>
 								<p><b>Satoshi per Byte</b>: <span class="feeSatByte">0</span></p>
 
-								<p>Based on your data and this recently mined transaction we recommend a fee of <b><span class="recommendedFee">0.00000000</span> BTC</b> to get it into the next few blocks</p>
+								<p>Based on your data and this recently mined transaction we recommend a fee of <b><span class="recommendedFee">0.00000000</span> ZCR</b> to get it into the next few blocks</p>
 							</div>
 						</div>
 
@@ -920,11 +919,11 @@
 									<div class="form-group">
 										<label for="est_txi_regular">Regular</label>
 										<input type="number" class="form-control" id="est_txi_regular" value="107">
-									</div>
+									</div><!--
 									<div class="form-group">
 										<label for="est_txi_segwit">SegWit</label>
 										<input type="number" class="form-control" id="est_txi_segwit" value="27">
-									</div>
+									</div>-->
 									<div class="form-group">
 										<label for="est_txi_multisig">MultiSig</label>
 										<input type="number" class="form-control" id="est_txi_multisig" value="351">
@@ -991,7 +990,7 @@
     								</table>
 								<br>
 							</div>
-	
+	                        <!--
 							<div class="hidden verifyData" id="verifyRsDataSegWit">
 				                               	<label>Segwit Address</label>
    								<div class="row">
@@ -1005,7 +1004,7 @@
 									</div>
 								</div>
 								<br>
-							</div>
+							</div>-->
 
 							<div class="hidden verifyData" id="verifyRsDataHodl">
 								<label>Hodl Address</label>
@@ -1310,36 +1309,36 @@
 						<p>Compatible with bitcoin core</p>
 						<p>Github <a href="https://github.com/OutCast3k/coinbin/">https://github.com/OutCast3k/coinbin/</a></p>
 						<p>TOR <a href="http://4zpinp6gdkjfplhk.onion">4zpinp6gdkjfplhk.onion</a></p>
-						<h3>What is Bitcoin?</h3>
-						<p>Bitcoin is a type of digital currency in which encryption techniques are used to regulate the generation of units of currency and verify the transfer of funds, operating independently of a central bank. See <a href="http://www.weusecoins.com/" target="_blank">weusecoins.com</a> for more information.</p>
-						<p>If you are looking to buy some Bitcoin try <a href="https://localbitcoins.com/?ch=173j" target="_blank">LocalBitcoins.com</a>.</p>
+						<h3>What is ZCore?</h3>
+						<p>ZCore is a type of digital currency in which encryption techniques are used to regulate the generation of units of currency and verify the transfer of funds, operating independently of a central bank. See <a href="http://www.weusecoins.com/" target="_blank">weusecoins.com</a> for more information.</p>
+						<p>If you are looking to buy some ZCore try <a href="https://localbitcoins.com/?ch=173j" target="_blank">LocalBitcoins.com</a>.</p>
 						<h3>Information</h3>
 						<p>Coinb.in is a free and open source project released under the MIT license, originally by <a href="https://bitcointalk.org/index.php?action=profile;u=34834" target="_blank">OutCast3k</a> in 2013. Discussion of the project can be found at <a href="https://bitcointalk.org/index.php?topic=390046" target="_blank">bitcointalk.org</a> during its early testing stages when its primary focus was to develop a proof of concept multisig solution in javascript.</p>
 						<p>Coinb.in is run and funded by the generosity of others in terms of <a href="https://github.com/OutCast3k/coinbin/graphs/contributors" target="_blank">development</a> and hosting.</p>
 						<h3>Privacy</h3>
 						<p>Coinb.in believes strongly in privacy, not only do we support the use of TOR, the site does not collect and store IP or transaction data via our servers nor do we store your bitcoins private key. We do route traffic via cloudflare using an SSL certificate.</p>
 						<h3>Support</h3>
-						<p>We recommend that you first check our <a href="https://status.coinb.in/" target="_blank">service status</a> page and then <a href="https://blog.coinb.in/" target="_blank">blog</a> page which has multiple <a href="https://blog.coinb.in/guides" target="_blank">guides</a>. However if the problem persists you can contact us by emailing support{at}coinb.in.</p>
+						<p>We recommend that you first check our <a href="https://status.zcore.cash/" target="_blank">service status</a> page and then <a href="https://blog.coinb.in/" target="_blank">blog</a> page which has multiple <a href="https://blog.coinb.in/guides" target="_blank">guides</a>. However if the problem persists you can contact us by emailing support{at}coinb.in.</p>
 						<h3>Donate</h3>
-						<p>Please donate to <a href="bitcoin:3K1oFZMks41C7qDYBsr72SYjapLqDuSYuN">3K1oFZMks41C7qDYBsr72SYjapLqDuSYuN</a> if you found this project useful or want to see more features!</p>
+						<p>Please donate to <a href="zcore:ZV6JZXAbFTyjE5Bvsf1qtXVdftvybGioU3">ZV6JZXAbFTyjE5Bvsf1qtXVdftvybGioU3</a> if you found this project useful or want to see more features!</p>
 					</div>
 
 					<div class="tab-pane tab-content" id="settings">
 						<h2>Settings <small> making coinb.in even better!</small></h2>
 						<p>These simple settings below make coinb.in one of the most decentralized wallets in the world.</p>
-
+                        
 						<div class="row">
 							<div class="col-md-12">
 								<b>Network</b>: <br>
 								<p class="text-muted">Select which network you'd like to use for key pair generation.</p>
 								<select class="form-control" id="coinjs_coin">
-									<option value="bitcoin_mainnet" rel="0x00;0x80;0x05;0x488b21e;0x488ade4;coinb.in;coinb.in">Bitcoin (mainnet)</option>
-									<option value="dogecoin_mainnet" rel="0x1e;0x9e;0x16;0x0827421e;0x089944e4;chain.so_dogecoin;chain.so_dogecoin">Dogecoin (mainnet)</option>
+									<option value="bitcoin_mainnet" rel="0x50;0x50;0x00;0x888b21e;0x988ade4;wallet.zcore.cash;wallet.zcore.cash">ZCore (mainnet)</option>
+									<!--<option value="dogecoin_mainnet" rel="0x1e;0x9e;0x16;0x0827421e;0x089944e4;chain.so_dogecoin;chain.so_dogecoin">Dogecoin (mainnet)</option>
 									<option value="carboncoin_mainnet" rel="0x2f;0xaf;0x05;0x488b21e;0x488ade4;cryptoid.info_carboncoin;cryptoid.info_carboncoin">Carboncoin (mainnet)</option>
 									<option value="shadowcash_mainnet" rel="0x3f;0xbf;0x7d;0xee80286a;0xee8031e8;false;false">ShadowCash (mainnet)</option>
-									<option value="bitcoin_testnet" rel="0x6f;0xef;0xc4;0x043587cf;0x04358394;false;false">Bitcoin (testnet)</option>
+									<option value="bitcoin_testnet" rel="0x6f;0xef;0xc4;0x043587cf;0x04358394;false;false">Bitcoin (testnet)</option> -->
 
-									<option value="custom" rel="0x00;0x80;0x05;0x488b21e;0x488ade4;false;false">Custom</option>
+									<!--<option value="custom" rel="0x00;0x80;0x05;0x488b21e;0x488ade4;false;false">Custom</option>-->
 								</select>
 							</div>
 						</div>
@@ -1390,11 +1389,11 @@
 								<b>Broadcast</b>: <br>
 								<p class="text-muted">Select the network you wish to broadcast the transaction via</p>
 								<select class="form-control" id="coinjs_broadcast">
-									<option value="coinb.in">coinb.in (Bitcoin mainnet)</option>
-									<option value="chain.so_bitcoinmainnet"> Chain.so (Bitcoin mainnet)</option>
+									<option value="wallet.zcore.cash">wallet.zcore.cash (ZCore mainnet)</option>
+									<!--<option value="chain.so_bitcoinmainnet"> Chain.so (Bitcoin mainnet)</option>
 									<option value="blockcypher_bitcoinmainnet"> Blockcypher.com (Bitcoin mainnet)</option>
 									<option value="chain.so_dogecoin"> Chain.so (Dogecoin)</option>
-									<option value="cryptoid.info_carboncoin"> Cryptoid.info (Carboncoin)</option>
+									<option value="cryptoid.info_carboncoin"> Cryptoid.info (Carboncoin)</option>-->
 								</select>
 							</div>
 						</div>
@@ -1406,10 +1405,10 @@
 								<b>Unspent outputs</b>: <br>
 								<p class="text-muted">Select the network you wish to retreive your unspent inputs from</p>
 								<select class="form-control" id="coinjs_utxo">
-									<option value="coinb.in">coinb.in (Bitcoin mainnet)</option>
-									<option value="chain.so_litecoin"> Chain.so (Litecoin)</option>
+									<option value="wallet.zcore.cash">wallet.zcore.cash (ZCore mainnet)</option>
+									<!--<option value="chain.so_litecoin"> Chain.so (Litecoin)</option>
 									<option value="chain.so_dogecoin"> Chain.so (Dogecoin)</option>
-									<option value="cryptoid.info_carboncoin"> Cryptoid.info (Carboncoin)</option>
+									<option value="cryptoid.info_carboncoin"> Cryptoid.info (Carboncoin)</option>-->
 								</select>
 							</div>
 						</div>
@@ -1448,7 +1447,7 @@
 				</div>
 
 				<div class="modal-body">
-					<p>You are about to send a transaction to the value of <span id="spendAmount">0.00</span> BTC</p>
+					<p>You are about to send a transaction to the value of <span id="spendAmount">0.00</span> ZCR</p>
 
 					<br>
 					<div id="walletSendConfirmStatus" class="alert alert-danger hidden"></div>
@@ -1581,7 +1580,7 @@
 				</div>
 
 				<div class="modal-body">
-					Please be aware that you have created a transaction with what seems to be a very high fee of <span id="modalWarningFeeAmount"></span> BTC!
+					Please be aware that you have created a transaction with what seems to be a very high fee of <span id="modalWarningFeeAmount"></span> ZCR!
 				</div>
 
 				<div class="modal-footer">
