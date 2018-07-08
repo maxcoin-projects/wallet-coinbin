@@ -1,12 +1,14 @@
 $(document).ready(function() {
 
 	/* open wallet code */
-
-	var explorer_tx = "https://coinb.in/tx/"
-	var explorer_addr = "https://coinb.in/addr/"
-	var explorer_block = "https://coinb.in/block/"
+    var explorer = "http://explorer.zcore.me/"
+    var explorer_api = explorer+"api"
+    var explorer_tx = explorer+"#/tx/"
+    var explorer_addr = explorer+"#/address/"
+    var explorer_block = explorer+"#/block/"
 
 	var wallet_timer = false;
+	var tx_timer = false;
 
 	$("#openBtn").click(function(){
 		var email = $("#openEmail").val().toLowerCase();
@@ -36,6 +38,7 @@ $(document).ready(function() {
 					var privkeyaes = CryptoJS.AES.encrypt(keys.wif, pass);
 
 					$("#walletKeys .walletSegWitRS").addClass("hidden");
+
 					if($("#walletSegwit").is(":checked")){
 						if($("#walletSegwitBech32").is(":checked")){
 							var sw = coinjs.bech32Address(pubkey);
@@ -55,7 +58,7 @@ $(document).ready(function() {
 
 					$("#walletQrCode").html("");
 					var qrcode = new QRCode("walletQrCode");
-					qrcode.makeCode("bitcoin:"+address);
+					qrcode.makeCode("zcore:"+address);
 
 					$("#walletKeys .privkey").val(wif);
 					$("#walletKeys .pubkey").val(pubkey);
@@ -64,7 +67,7 @@ $(document).ready(function() {
 					$("#openLogin").hide();
 					$("#openWallet").removeClass("hidden").show();
 
-					walletBalance();
+					walletApiBalance();
 					checkBalanceLoop();
 				} else {
 					$("#openLoginStatus").html("Your passwords do not match!").removeClass("hidden").fadeOut().fadeIn();
@@ -92,7 +95,7 @@ $(document).ready(function() {
 
 		$("#walletQrCode").html("");
 		var qrcode = new QRCode("walletQrCode");
-		qrcode.makeCode("bitcoin:");
+		qrcode.makeCode("zcore:");
 
 		$("#walletKeys .privkey").val("");
 		$("#walletKeys .pubkey").val("");
@@ -100,6 +103,12 @@ $(document).ready(function() {
 		$("#openLoginStatus").html("").hide();
 	});
 
+	function hideAll(){
+		$("#walletKeys").removeClass("hidden").addClass("hidden");
+		$("#walletSpend").removeClass("hidden").addClass("hidden");
+		$("#walletTxHistory").removeClass("hidden").addClass("hidden");
+	}
+	
 	$("#walletSegwit").click(function(){
 		if($(this).is(":checked")){
 			$(".walletSegwitType").attr('disabled',false);
@@ -129,12 +138,29 @@ $(document).ready(function() {
 	});
 
 	$("#walletShowKeys").click(function(){
+		hideAll();
 		$("#walletKeys").removeClass("hidden");
-		$("#walletSpend").removeClass("hidden").addClass("hidden");
 	});
 
 	$("#walletBalance").click(function(){
-		walletBalance();
+		walletApiBalance();
+	});
+
+	$("#walletTxShow").click(function(){
+		hideAll();
+		if (tx_timer) {
+			clearTimeout(tx_timer);
+			tx_timer = false;
+			return;
+		}
+		addHeader();
+		buildHistory();
+		$("#walletTxHistory").removeClass("hidden").fadeOut().fadeIn();
+		checkTxLoop();
+	});
+
+	$("#walletUncBalance").click(function(){
+		walletApiUncBalance();
 	});
 
 	$("#walletConfirmSend").click(function(){
@@ -207,11 +233,11 @@ $(document).ready(function() {
 					}
 
 					// update wallet balance
-					walletBalance();
+					walletApiBalance();
 
 				}, signed);
 			} else {
-				$("#walletSendConfirmStatus").removeClass("hidden").addClass('alert-danger').html("You have a confirmed balance of "+dvalue+" BTC unable to send "+total+" BTC").fadeOut().fadeIn();
+				$("#walletSendConfirmStatus").removeClass("hidden").addClass('alert-danger').html("You have a confirmed balance of "+dvalue+" ZCR unable to send "+total+" ZCR").fadeOut().fadeIn();
 				thisbtn.attr('disabled',false);
 			}
 
@@ -281,8 +307,9 @@ $(document).ready(function() {
 	});
 
 	$("#walletShowSpend").click(function(){
+		hideAll();
+
 		$("#walletSpend").removeClass("hidden");
-		$("#walletKeys").removeClass("hidden").addClass("hidden");
 	});
 
 	$("#walletSpendTo .addressAdd").click(function(){
@@ -296,28 +323,174 @@ $(document).ready(function() {
 		});
 	});
 
+	function walletApiBalance() {
+	 addr =  $("#walletAddress").html();
+	 $.ajax ({
+		 type: "GET",
+		 url: explorer_api+"/addr/"+$("#walletAddress").html(),
+		 dataType: "json",
+		 error: function(data) {
+			 $("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+		 },
+		 success: function(data) {
+			$("#walletBalance").html(data.balance+" ZCR").fadeOut().fadeIn();
+			$("#walletUncBalance").html(data.unconfirmedBalance+" ZCR").fadeOut().fadeIn();
+
+			$("#walletLoader").addClass("hidden");
+		 },
+		 complete: function(data, status) {
+			 $("#redeemFromBtn").html("Load").attr('disabled',false);
+			 totalInputAmount();
+		 }
+	 });
+	}
+	/* Unconfirmed balance */
+	function walletApiUncBalance() {
+	 $.ajax ({
+		 type: "GET",
+		 url: explorer_api+"/addr/"+$("#walletAddress").html(),
+		 dataType: "json",
+		 error: function(data) {
+			 $("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+		 },
+		 success: function(data) {
+			$("#walletBalance").html(data.balance+" ZCR").fadeOut().fadeIn();
+			$("#walletUncBalance").html(data.unconfirmedBalance+" ZCR").fadeOut().fadeIn();
+
+			$("#walletLoader").addClass("hidden");
+		 },
+		 complete: function(data, status) {
+			 $("#redeemFromBtn").html("Load").attr('disabled',false);
+			 totalInputAmount();
+		 }
+	 });
+	}
+
+	/* Transactions List */
+	function getTxConf(txid,cb,cberr){
+		$.ajax ({
+			type: "GET",
+			url: explorer_api+"/tx/"+txid,
+			dataType: "json",
+			error: function(data) {
+				cberr();
+				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+			},
+			success: function(data) {
+				cb(data.txid, data.confirmations);
+			},
+			complete: function(data, status) {
+				$("#redeemFromBtn").html("Load").attr('disabled',false);
+			}
+		});
+	}
+
+	function getAddressTx(cb, cberr){
+		$.ajax ({
+			type: "GET",
+			url: explorer_api+"/addr/"+$("#walletAddress").html(),
+			dataType: "json",
+			error: function(data) {
+				cberr();
+				$("#redeemFromStatus").removeClass('hidden').html('<span class="glyphicon glyphicon-exclamation-sign"></span> Unexpected error, unable to retrieve unspent outputs!');
+			},
+			success: function(data) {
+				cb(data.transactions);
+			},
+			complete: function(data, status) {
+				$("#redeemFromBtn").html("Load").attr('disabled',false);
+			}
+		});
+	}
+
+
+	function addHeader(tx,conf){
+		var tb = document.getElementById("txtable");
+		tb.innerHTML = "";
+		hd = tb.createTHead();
+		row = hd.insertRow();
+		c1 = row.insertCell();
+		c2 = row.insertCell();
+		c1.innerHTML = "Transaction";
+		c2.innerHTML = "Confirmations";
+		c1.style.fontWeight = 900;
+		c2.style.fontWeight = 900;
+		c1.style.textAlign = "center";
+		c2.style.textAlign = "center";
+	}
+
+	function addTxHistory(tx,conf){
+		var rtx = document.getElementById("txtable");
+		row = rtx.insertRow()
+		c1 = row.insertCell();
+		c2 = row.insertCell();
+		c1.innerHTML = "<a href=\""+explorer_tx+tx+"\" />"+tx.slice(0, 14)+"</a>";
+		c2.innerHTML = conf;
+		if (conf < 6) {
+			c2.style.color = "red";
+		}else {
+			c2.style.color = "green";
+		}
+		c1.style.textAlign = "center";
+		c2.style.textAlign = "center";
+	
+	}
+
+	function buildHistory(){
+		getAddressTx(function(txarr){
+			var l = txarr.length;
+			if (l > 0){
+				for (i = 0; i < l; i++) {
+					getTxConf(txarr[i],function(tx,conf){
+						console.log(tx);
+						addTxHistory(tx,conf);
+					}, function(){
+						console.log("Failed to load address transaction");
+						return;
+					});
+				}
+			} 
+		}, function(){
+			console.log("Failed to load address transaction");
+			return;
+		})
+	}
+    /*
 	function walletBalance(){
 		var tx = coinjs.transaction();
 		$("#walletLoader").removeClass("hidden");
 		coinjs.addressBalance($("#walletAddress").html(),function(data){
 			if($(data).find("result").text()==1){
 				var v = $(data).find("balance").text()/100000000;
-				$("#walletBalance").html(v+" BTC").attr('rel',v).fadeOut().fadeIn();
+				$("#walletBalance").html(v+" ZCR").attr('rel',v).fadeOut().fadeIn();
 			} else {
-				$("#walletBalance").html("0.00 BTC").attr('rel',v).fadeOut().fadeIn();
+				$("#walletBalance").html("0.00 ZCR").attr('rel',v).fadeOut().fadeIn();
 			}
 
 			$("#walletLoader").addClass("hidden");
 		});
-	}
+	}*/
 
 	function checkBalanceLoop(){
 		clearTimeout(wallet_timer);
 		wallet_timer = setTimeout(function(){
 			if($("#walletLoader").hasClass("hidden")){
-				walletBalance();
+				walletApiBalance();
 			}
 			checkBalanceLoop();
+		},45000);
+	}
+
+	function checkTxLoop(){
+		clearTimeout(tx_timer);
+		tx_timer = setTimeout(function(){
+			if($("#walletLoader").hasClass("hidden")){
+				hideAll();
+				addHeader();
+				buildHistory();
+				$("#walletTxHistory").removeClass("hidden").fadeOut().fadeIn();
+			}
+			checkTxLoop();
 		},45000);
 	}
 
@@ -839,7 +1012,7 @@ $(document).ready(function() {
 
 			QCodeDecoder().decodeFromCamera(document.getElementById('videoReader'), function(er,data){
 				if(!er){
-					var match = data.match(/^bitcoin\:([13][a-z0-9]{26,33})/i);
+					var match = data.match(/^zcore\:([13][a-z0-9]{26,33})/i);
 					var result = match ? match[1] : data;
 					$(""+$("#qrcode-scanner-callback-to").html()).val(result);
 					$("#qrScanClose").click();
@@ -1240,7 +1413,7 @@ $(document).ready(function() {
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
-			url: "https://chain.so/api/v2/send_tx/BTC/",
+			url: "http://explorer.zcore.me/api/tx/send",
 			data: {"tx_hex":$("#rawTransaction").val()},
 			dataType: "json",
 			error: function(data) {
@@ -1269,7 +1442,7 @@ $(document).ready(function() {
 		$(thisbtn).val('Please wait, loading...').attr('disabled',true);
 		$.ajax ({
 			type: "POST",
-			url: "https://api.blockcypher.com/v1/btc/main/txs/push",
+			url: "http://explorer.zcore.me/api/tx/send",
 			data: JSON.stringify({"tx":$("#rawTransaction").val()}),
 			error: function(data) {
 				var obj = $.parseJSON(data.responseText);
@@ -1690,7 +1863,7 @@ $(document).ready(function() {
 			}
 		} else {
 			var qrcode = new QRCode("qrcode");
-			qrstr = "bitcoin:"+$('.address',thisbtn).val();
+			qrstr = "zcore:"+$('.address',thisbtn).val();
 		}
 
 		if(qrstr){
