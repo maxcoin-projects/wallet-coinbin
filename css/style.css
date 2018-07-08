@@ -33,6 +33,12 @@ body {
         display: block;
 }
 
+.jumbotron {
+	color: white;
+	background-color: #134434;
+}
+
+
 #fees .txi_regular {
 	background: #d3d3d3;
 }
