@@ -1,7 +1,7 @@
 coinbin
 =======
 
-A Open Source Browser Based Maxcoin Wallet. Version 1.4 beta by OutCast3k
+A Open Source Browser Based Maxcoin Wallet. by Oliver Morris
 
 Original Github URL: https://github.com/OutCast3k/coinbin/
 
@@ -29,4 +29,3 @@ Coinb.in supports a number of key features such as:
 - Bech32 address support
 - Fee calculator - https://coinb.in/#fees
 
-Donate to 3K1oFZMks41C7qDYBsr72SYjapLqDuSYuN to see more development!
