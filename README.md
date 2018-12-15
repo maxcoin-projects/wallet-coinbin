@@ -1,11 +1,11 @@
 coinbin
 =======
 
-A Open Source Browser Based Bitcoin Wallet. Version 1.4 beta by OutCast3k
+A Open Source Browser Based Maxcoin Wallet. Version 1.4 beta by OutCast3k
 
-Live version available at http://coinb.in/ or http://4zpinp6gdkjfplhk.onion
+Original Github URL: https://github.com/OutCast3k/coinbin/
 
-Github URL: https://github.com/OutCast3k/coinbin/
+Maxcoin Github URL: https://github.com/maxcoin-projects/wallet-coinbin
 
 Coinb.in supports a number of key features such as: 
 
@@ -22,13 +22,10 @@ Coinb.in supports a number of key features such as:
 - Add custom data to transactions with the use of OP_RETURN.
 - Support current Dark Wallet Stealth Address structure (as of version Alpha 7) for outputs.
 - Brain wallet support.
-- Compatible with bitcoin-qt
-- An offical .onion address for tor users.
 - Offline qrcode creator and scanning tool
 - HD (bip32) support
 - Supports altcoins such as litecoin
 - Replace by fee (RBF) Support
-- Segwit Support
 - Bech32 address support
 - Fee calculator - https://coinb.in/#fees
 
